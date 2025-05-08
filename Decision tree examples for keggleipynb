@@ -1,0 +1,2447 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "id": "039ff18a-7150-4d5c-a773-f8f4adbe58cf",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Pregnancies</th>\n",
+       "      <th>Glucose</th>\n",
+       "      <th>BloodPressure</th>\n",
+       "      <th>SkinThickness</th>\n",
+       "      <th>Insulin</th>\n",
+       "      <th>BMI</th>\n",
+       "      <th>DiabetesPedigreeFunction</th>\n",
+       "      <th>Age</th>\n",
+       "      <th>Outcome</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>6</td>\n",
+       "      <td>148</td>\n",
+       "      <td>72</td>\n",
+       "      <td>35</td>\n",
+       "      <td>0</td>\n",
+       "      <td>33.6</td>\n",
+       "      <td>0.627</td>\n",
+       "      <td>50</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>85</td>\n",
+       "      <td>66</td>\n",
+       "      <td>29</td>\n",
+       "      <td>0</td>\n",
+       "      <td>26.6</td>\n",
+       "      <td>0.351</td>\n",
+       "      <td>31</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>8</td>\n",
+       "      <td>183</td>\n",
+       "      <td>64</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>23.3</td>\n",
+       "      <td>0.672</td>\n",
+       "      <td>32</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>89</td>\n",
+       "      <td>66</td>\n",
+       "      <td>23</td>\n",
+       "      <td>94</td>\n",
+       "      <td>28.1</td>\n",
+       "      <td>0.167</td>\n",
+       "      <td>21</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>137</td>\n",
+       "      <td>40</td>\n",
+       "      <td>35</td>\n",
+       "      <td>168</td>\n",
+       "      <td>43.1</td>\n",
+       "      <td>2.288</td>\n",
+       "      <td>33</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>763</th>\n",
+       "      <td>10</td>\n",
+       "      <td>101</td>\n",
+       "      <td>76</td>\n",
+       "      <td>48</td>\n",
+       "      <td>180</td>\n",
+       "      <td>32.9</td>\n",
+       "      <td>0.171</td>\n",
+       "      <td>63</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>764</th>\n",
+       "      <td>2</td>\n",
+       "      <td>122</td>\n",
+       "      <td>70</td>\n",
+       "      <td>27</td>\n",
+       "      <td>0</td>\n",
+       "      <td>36.8</td>\n",
+       "      <td>0.340</td>\n",
+       "      <td>27</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>765</th>\n",
+       "      <td>5</td>\n",
+       "      <td>121</td>\n",
+       "      <td>72</td>\n",
+       "      <td>23</td>\n",
+       "      <td>112</td>\n",
+       "      <td>26.2</td>\n",
+       "      <td>0.245</td>\n",
+       "      <td>30</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>766</th>\n",
+       "      <td>1</td>\n",
+       "      <td>126</td>\n",
+       "      <td>60</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>30.1</td>\n",
+       "      <td>0.349</td>\n",
+       "      <td>47</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>767</th>\n",
+       "      <td>1</td>\n",
+       "      <td>93</td>\n",
+       "      <td>70</td>\n",
+       "      <td>31</td>\n",
+       "      <td>0</td>\n",
+       "      <td>30.4</td>\n",
+       "      <td>0.315</td>\n",
+       "      <td>23</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>768 rows × 9 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     Pregnancies  Glucose  BloodPressure  SkinThickness  Insulin   BMI  \\\n",
+       "0              6      148             72             35        0  33.6   \n",
+       "1              1       85             66             29        0  26.6   \n",
+       "2              8      183             64              0        0  23.3   \n",
+       "3              1       89             66             23       94  28.1   \n",
+       "4              0      137             40             35      168  43.1   \n",
+       "..           ...      ...            ...            ...      ...   ...   \n",
+       "763           10      101             76             48      180  32.9   \n",
+       "764            2      122             70             27        0  36.8   \n",
+       "765            5      121             72             23      112  26.2   \n",
+       "766            1      126             60              0        0  30.1   \n",
+       "767            1       93             70             31        0  30.4   \n",
+       "\n",
+       "     DiabetesPedigreeFunction  Age  Outcome  \n",
+       "0                       0.627   50        1  \n",
+       "1                       0.351   31        0  \n",
+       "2                       0.672   32        1  \n",
+       "3                       0.167   21        0  \n",
+       "4                       2.288   33        1  \n",
+       "..                        ...  ...      ...  \n",
+       "763                     0.171   63        0  \n",
+       "764                     0.340   27        0  \n",
+       "765                     0.245   30        0  \n",
+       "766                     0.349   47        1  \n",
+       "767                     0.315   23        0  \n",
+       "\n",
+       "[768 rows x 9 columns]"
+      ]
+     },
+     "execution_count": 70,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.tree import DecisionTreeClassifier\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "import matplotlib.pyplot as plt\n",
+    "from sklearn.model_selection import cross_val_score\n",
+    "from sklearn.model_selection import GridSearchCV\n",
+    "from sklearn.linear_model import Lasso\n",
+    "from sklearn.model_selection import RandomizedSearchCV\n",
+    "df=pd.read_csv(\"diabetes.csv\")\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "id": "c829167b-d48c-44fc-9c44-a53a57fd773e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(768, 9)"
+      ]
+     },
+     "execution_count": 71,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 72,
+   "id": "a38cd166-14ae-404e-a113-bdb4ca7a68fd",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin',\n",
+       "       'BMI', 'DiabetesPedigreeFunction', 'Age', 'Outcome'],\n",
+       "      dtype='object')"
+      ]
+     },
+     "execution_count": 72,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 73,
+   "id": "f28bd1f5-08c9-4127-97cd-fc53c3efc106",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pregnancies                   int64\n",
+       "Glucose                       int64\n",
+       "BloodPressure                 int64\n",
+       "SkinThickness                 int64\n",
+       "Insulin                       int64\n",
+       "BMI                         float64\n",
+       "DiabetesPedigreeFunction    float64\n",
+       "Age                           int64\n",
+       "Outcome                       int64\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 73,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "id": "7d2d944d-d439-49ca-b97d-2258595b0804",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 0])"
+      ]
+     },
+     "execution_count": 74,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[\"Outcome\"].unique()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "id": "fc7dbf2d-8500-49ce-9ae6-fbbc5d2a9646",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pregnancies                 0\n",
+       "Glucose                     0\n",
+       "BloodPressure               0\n",
+       "SkinThickness               0\n",
+       "Insulin                     0\n",
+       "BMI                         0\n",
+       "DiabetesPedigreeFunction    0\n",
+       "Age                         0\n",
+       "Outcome                     0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 75,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.isna().sum()\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "id": "2458cb58-9fce-486d-a73b-1f1588ab280e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Pregnancies</th>\n",
+       "      <th>Glucose</th>\n",
+       "      <th>BloodPressure</th>\n",
+       "      <th>SkinThickness</th>\n",
+       "      <th>Insulin</th>\n",
+       "      <th>BMI</th>\n",
+       "      <th>DiabetesPedigreeFunction</th>\n",
+       "      <th>Age</th>\n",
+       "      <th>Outcome</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>6</td>\n",
+       "      <td>148</td>\n",
+       "      <td>72</td>\n",
+       "      <td>35</td>\n",
+       "      <td>0</td>\n",
+       "      <td>33</td>\n",
+       "      <td>0.627</td>\n",
+       "      <td>50</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>85</td>\n",
+       "      <td>66</td>\n",
+       "      <td>29</td>\n",
+       "      <td>0</td>\n",
+       "      <td>26</td>\n",
+       "      <td>0.351</td>\n",
+       "      <td>31</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>8</td>\n",
+       "      <td>183</td>\n",
+       "      <td>64</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>23</td>\n",
+       "      <td>0.672</td>\n",
+       "      <td>32</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>89</td>\n",
+       "      <td>66</td>\n",
+       "      <td>23</td>\n",
+       "      <td>94</td>\n",
+       "      <td>28</td>\n",
+       "      <td>0.167</td>\n",
+       "      <td>21</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>137</td>\n",
+       "      <td>40</td>\n",
+       "      <td>35</td>\n",
+       "      <td>168</td>\n",
+       "      <td>43</td>\n",
+       "      <td>2.288</td>\n",
+       "      <td>33</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>763</th>\n",
+       "      <td>10</td>\n",
+       "      <td>101</td>\n",
+       "      <td>76</td>\n",
+       "      <td>48</td>\n",
+       "      <td>180</td>\n",
+       "      <td>32</td>\n",
+       "      <td>0.171</td>\n",
+       "      <td>63</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>764</th>\n",
+       "      <td>2</td>\n",
+       "      <td>122</td>\n",
+       "      <td>70</td>\n",
+       "      <td>27</td>\n",
+       "      <td>0</td>\n",
+       "      <td>36</td>\n",
+       "      <td>0.340</td>\n",
+       "      <td>27</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>765</th>\n",
+       "      <td>5</td>\n",
+       "      <td>121</td>\n",
+       "      <td>72</td>\n",
+       "      <td>23</td>\n",
+       "      <td>112</td>\n",
+       "      <td>26</td>\n",
+       "      <td>0.245</td>\n",
+       "      <td>30</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>766</th>\n",
+       "      <td>1</td>\n",
+       "      <td>126</td>\n",
+       "      <td>60</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>30</td>\n",
+       "      <td>0.349</td>\n",
+       "      <td>47</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>767</th>\n",
+       "      <td>1</td>\n",
+       "      <td>93</td>\n",
+       "      <td>70</td>\n",
+       "      <td>31</td>\n",
+       "      <td>0</td>\n",
+       "      <td>30</td>\n",
+       "      <td>0.315</td>\n",
+       "      <td>23</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>768 rows × 9 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     Pregnancies  Glucose  BloodPressure  SkinThickness  Insulin  BMI  \\\n",
+       "0              6      148             72             35        0   33   \n",
+       "1              1       85             66             29        0   26   \n",
+       "2              8      183             64              0        0   23   \n",
+       "3              1       89             66             23       94   28   \n",
+       "4              0      137             40             35      168   43   \n",
+       "..           ...      ...            ...            ...      ...  ...   \n",
+       "763           10      101             76             48      180   32   \n",
+       "764            2      122             70             27        0   36   \n",
+       "765            5      121             72             23      112   26   \n",
+       "766            1      126             60              0        0   30   \n",
+       "767            1       93             70             31        0   30   \n",
+       "\n",
+       "     DiabetesPedigreeFunction  Age  Outcome  \n",
+       "0                       0.627   50        1  \n",
+       "1                       0.351   31        0  \n",
+       "2                       0.672   32        1  \n",
+       "3                       0.167   21        0  \n",
+       "4                       2.288   33        1  \n",
+       "..                        ...  ...      ...  \n",
+       "763                     0.171   63        0  \n",
+       "764                     0.340   27        0  \n",
+       "765                     0.245   30        0  \n",
+       "766                     0.349   47        1  \n",
+       "767                     0.315   23        0  \n",
+       "\n",
+       "[768 rows x 9 columns]"
+      ]
+     },
+     "execution_count": 76,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[\"BMI\"]=df[\"BMI\"].astype('int')\n",
+    "df\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "id": "da19c9ad-4892-45e2-8359-988d6a126bf5",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[  6.   , 148.   ,  72.   , ...,  33.   ,   0.627,  50.   ],\n",
+       "       [  1.   ,  85.   ,  66.   , ...,  26.   ,   0.351,  31.   ],\n",
+       "       [  8.   , 183.   ,  64.   , ...,  23.   ,   0.672,  32.   ],\n",
+       "       ...,\n",
+       "       [  5.   , 121.   ,  72.   , ...,  26.   ,   0.245,  30.   ],\n",
+       "       [  1.   , 126.   ,  60.   , ...,  30.   ,   0.349,  47.   ],\n",
+       "       [  1.   ,  93.   ,  70.   , ...,  30.   ,   0.315,  23.   ]],\n",
+       "      shape=(768, 8))"
+      ]
+     },
+     "execution_count": 77,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x=df.drop(\"Outcome\",axis=\"columns\").values\n",
+    "x"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "id": "7c221187-3566-4f22-a592-1fa952bae11b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0,\n",
+       "       1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1,\n",
+       "       0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0,\n",
+       "       1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,\n",
+       "       1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,\n",
+       "       1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1,\n",
+       "       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,\n",
+       "       1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1,\n",
+       "       0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,\n",
+       "       1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1,\n",
+       "       1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0,\n",
+       "       1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0,\n",
+       "       1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0,\n",
+       "       0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0,\n",
+       "       1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0,\n",
+       "       0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,\n",
+       "       0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0,\n",
+       "       0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0,\n",
+       "       0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1,\n",
+       "       0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,\n",
+       "       1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,\n",
+       "       1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,\n",
+       "       1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,\n",
+       "       0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0,\n",
+       "       0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,\n",
+       "       1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1,\n",
+       "       0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1,\n",
+       "       0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0,\n",
+       "       0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,\n",
+       "       1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0])"
+      ]
+     },
+     "execution_count": 78,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y=df[\"Outcome\"].values\n",
+    "y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "id": "6a4a9d13-000a-4423-a513-189e73b0de08",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_train,X_test,Y_train,Y_test=train_test_split(x,y,test_size=0.2,random_state=0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "id": "e15c2d16-8e74-48df-9e0b-81c4cd28e122",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[  7.   , 150.   ,  78.   , ...,  35.   ,   0.692,  54.   ],\n",
+       "       [  4.   ,  97.   ,  60.   , ...,  28.   ,   0.443,  22.   ],\n",
+       "       [  0.   , 165.   ,  90.   , ...,  52.   ,   0.427,  23.   ],\n",
+       "       ...,\n",
+       "       [  4.   ,  94.   ,  65.   , ...,  24.   ,   0.148,  21.   ],\n",
+       "       [ 11.   ,  85.   ,  74.   , ...,  30.   ,   0.3  ,  35.   ],\n",
+       "       [  5.   , 136.   ,  82.   , ...,   0.   ,   0.64 ,  69.   ]],\n",
+       "      shape=(614, 8))"
+      ]
+     },
+     "execution_count": 80,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "\n",
+    "np.set_printoptions(suppress=True)\n",
+    "X_train"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "id": "6bbe186d-0492-4595-a7ee-10fa5c1576b9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[  1.   , 199.   ,  76.   , ...,  42.   ,   1.394,  22.   ],\n",
+       "       [  2.   , 107.   ,  74.   , ...,  33.   ,   0.404,  23.   ],\n",
+       "       [  4.   ,  76.   ,  62.   , ...,  34.   ,   0.391,  25.   ],\n",
+       "       ...,\n",
+       "       [  4.   , 142.   ,  86.   , ...,  44.   ,   0.645,  22.   ],\n",
+       "       [  3.   , 116.   ,  74.   , ...,  26.   ,   0.107,  24.   ],\n",
+       "       [  1.   , 107.   ,  72.   , ...,  30.   ,   0.821,  24.   ]],\n",
+       "      shape=(154, 8))"
+      ]
+     },
+     "execution_count": 81,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X_test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "id": "6f346fc8-bba4-4764-ad75-203e86321977",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,\n",
+       "       0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0,\n",
+       "       1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1,\n",
+       "       0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1,\n",
+       "       1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,\n",
+       "       1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1,\n",
+       "       0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0,\n",
+       "       0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0,\n",
+       "       1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1,\n",
+       "       0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1,\n",
+       "       0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1,\n",
+       "       1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0,\n",
+       "       0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0,\n",
+       "       0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0,\n",
+       "       1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,\n",
+       "       0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0,\n",
+       "       0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0,\n",
+       "       0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,\n",
+       "       0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0,\n",
+       "       0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,\n",
+       "       0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0,\n",
+       "       0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1,\n",
+       "       0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0,\n",
+       "       0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0])"
+      ]
+     },
+     "execution_count": 82,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Y_train"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "id": "b9312b6b-9616-4681-adac-ac4584bb81e0",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,\n",
+       "       1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1,\n",
+       "       1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,\n",
+       "       1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1,\n",
+       "       0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,\n",
+       "       0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0])"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Y_test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "id": "71597d83-0a9d-4799-a637-01a0280daba8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1 0 0 1 0 0 1 1 0 0 1 1 0 0 0 1 1 0 0 0 1 0 0 1 0 1 0 0 0 1 0 0 1 0 0 1 0\n",
+      " 0 1 1 1 0 0 1 1 0 0 1 1 0 1 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 1 0 0 0 0 1\n",
+      " 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 1 0\n",
+      " 1 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0\n",
+      " 0 0 0 0 0 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "model=DecisionTreeClassifier()\n",
+    "model.fit(X_train,Y_train)\n",
+    "print(model.predict(X_test))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "id": "9ad0c444-97f5-43f0-be4c-3d6c55c652f8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "76.62337662337663\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model.score(X_test,Y_test)*100)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "id": "e6bcdd6f-ec4f-44f1-a961-9feaf2673299",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model.predict([[1,93,70,31,0,30,0.315,23]]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "id": "af78605a-c2d2-4229-8305-30d54c75b7db",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[  2.    107.     74.     30.    100.     33.      0.404  23.   ]\n",
+      " [  4.     76.     62.      0.      0.     34.      0.391  25.   ]\n",
+      " [  5.    166.     72.     19.    175.     25.      0.587  51.   ]\n",
+      " [  0.    111.     65.      0.      0.     24.      0.66   31.   ]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(X_test[1:5])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "id": "35808e11-3ea1-40de-935f-b84484c097be",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 0 1 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model.predict(X_test[1:5]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 89,
+   "id": "cb87c310-cfa2-4663-9e61-e5799544606e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.7012987 , 0.71428571, 0.71428571, 0.5974026 , 0.76623377,\n",
+       "       0.72727273, 0.76623377, 0.76623377, 0.68421053, 0.77631579])"
+      ]
+     },
+     "execution_count": 89,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "final=cross_val_score(model,x,y,cv=10\n",
+    "                     \n",
+    "                     )\n",
+    "final"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "id": "639a0dd5-f487-4d05-8b11-4b823e9f5cfa",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(0.7213773069036227)"
+      ]
+     },
+     "execution_count": 90,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "final.mean()\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 91,
+   "id": "946485de-bb0b-4167-9868-1f317bc5ba5d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d={\n",
+    "    \"max_depth\":[3,5,10],\n",
+    "    \"min_samples_split\":[2,5,10]\n",
+    "}\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 92,
+   "id": "17036268-5642-4467-aa3b-457596d21ead",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1 0 0 1 0 0 1 1 0 1 1 1 0 0 0 1 1 0 0 0 1 0 0 0 0 1 0 1 0 1 0 0 0 1 0 1 0\n",
+      " 0 1 1 0 0 0 1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 1 0 1 1 1 1 0 1 0 0 0 0 1\n",
+      " 1 1 0 1 0 0 1 0 0 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 1 1 0 0 1 0 1 1 0 1 0 1 0\n",
+      " 1 1 1 1 1 0 0 0 1 1 1 0 1 0 0 0 1 0 0 0 0 0 1 0 1 1 1 1 0 0 1 0 0 1 0 0 0\n",
+      " 0 1 0 0 0 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "model=DecisionTreeClassifier()\n",
+    "obj=GridSearchCV(param_grid=d,cv=10,return_train_score=False,estimator=model)\n",
+    "obj.fit(X_train,Y_train)\n",
+    "print(obj.predict(X_test))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 93,
+   "id": "061ba281-581f-432d-9057-9655ab0463df",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.7597402597402597\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(obj.score(X_test,Y_test))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 94,
+   "id": "12224dc1-7171-499a-a297-8d94280a3d34",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>mean_fit_time</th>\n",
+       "      <th>std_fit_time</th>\n",
+       "      <th>mean_score_time</th>\n",
+       "      <th>std_score_time</th>\n",
+       "      <th>param_max_depth</th>\n",
+       "      <th>param_min_samples_split</th>\n",
+       "      <th>params</th>\n",
+       "      <th>split0_test_score</th>\n",
+       "      <th>split1_test_score</th>\n",
+       "      <th>split2_test_score</th>\n",
+       "      <th>split3_test_score</th>\n",
+       "      <th>split4_test_score</th>\n",
+       "      <th>split5_test_score</th>\n",
+       "      <th>split6_test_score</th>\n",
+       "      <th>split7_test_score</th>\n",
+       "      <th>split8_test_score</th>\n",
+       "      <th>split9_test_score</th>\n",
+       "      <th>mean_test_score</th>\n",
+       "      <th>std_test_score</th>\n",
+       "      <th>rank_test_score</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0.001393</td>\n",
+       "      <td>0.000347</td>\n",
+       "      <td>0.000593</td>\n",
+       "      <td>0.000203</td>\n",
+       "      <td>3</td>\n",
+       "      <td>2</td>\n",
+       "      <td>{'max_depth': 3, 'min_samples_split': 2}</td>\n",
+       "      <td>0.661290</td>\n",
+       "      <td>0.693548</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.790323</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.770492</td>\n",
+       "      <td>0.754098</td>\n",
+       "      <td>0.713300</td>\n",
+       "      <td>0.048683</td>\n",
+       "      <td>6</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>0.001388</td>\n",
+       "      <td>0.000230</td>\n",
+       "      <td>0.000592</td>\n",
+       "      <td>0.000110</td>\n",
+       "      <td>3</td>\n",
+       "      <td>5</td>\n",
+       "      <td>{'max_depth': 3, 'min_samples_split': 5}</td>\n",
+       "      <td>0.661290</td>\n",
+       "      <td>0.693548</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.790323</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.770492</td>\n",
+       "      <td>0.754098</td>\n",
+       "      <td>0.713300</td>\n",
+       "      <td>0.048683</td>\n",
+       "      <td>6</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>0.001499</td>\n",
+       "      <td>0.000171</td>\n",
+       "      <td>0.000631</td>\n",
+       "      <td>0.000128</td>\n",
+       "      <td>3</td>\n",
+       "      <td>10</td>\n",
+       "      <td>{'max_depth': 3, 'min_samples_split': 10}</td>\n",
+       "      <td>0.661290</td>\n",
+       "      <td>0.693548</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.790323</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.770492</td>\n",
+       "      <td>0.754098</td>\n",
+       "      <td>0.713300</td>\n",
+       "      <td>0.048683</td>\n",
+       "      <td>6</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>0.001794</td>\n",
+       "      <td>0.000133</td>\n",
+       "      <td>0.000577</td>\n",
+       "      <td>0.000112</td>\n",
+       "      <td>5</td>\n",
+       "      <td>2</td>\n",
+       "      <td>{'max_depth': 5, 'min_samples_split': 2}</td>\n",
+       "      <td>0.693548</td>\n",
+       "      <td>0.758065</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.704918</td>\n",
+       "      <td>0.723057</td>\n",
+       "      <td>0.024833</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0.001881</td>\n",
+       "      <td>0.000243</td>\n",
+       "      <td>0.000567</td>\n",
+       "      <td>0.000094</td>\n",
+       "      <td>5</td>\n",
+       "      <td>5</td>\n",
+       "      <td>{'max_depth': 5, 'min_samples_split': 5}</td>\n",
+       "      <td>0.693548</td>\n",
+       "      <td>0.758065</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.688525</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.704918</td>\n",
+       "      <td>0.724696</td>\n",
+       "      <td>0.021769</td>\n",
+       "      <td>2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>0.001975</td>\n",
+       "      <td>0.000174</td>\n",
+       "      <td>0.000586</td>\n",
+       "      <td>0.000111</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>{'max_depth': 5, 'min_samples_split': 10}</td>\n",
+       "      <td>0.725806</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.774194</td>\n",
+       "      <td>0.741935</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.688525</td>\n",
+       "      <td>0.704918</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.704918</td>\n",
+       "      <td>0.726256</td>\n",
+       "      <td>0.023031</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>0.002177</td>\n",
+       "      <td>0.000383</td>\n",
+       "      <td>0.000427</td>\n",
+       "      <td>0.000073</td>\n",
+       "      <td>10</td>\n",
+       "      <td>2</td>\n",
+       "      <td>{'max_depth': 10, 'min_samples_split': 2}</td>\n",
+       "      <td>0.822581</td>\n",
+       "      <td>0.661290</td>\n",
+       "      <td>0.725806</td>\n",
+       "      <td>0.758065</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.786885</td>\n",
+       "      <td>0.688525</td>\n",
+       "      <td>0.622951</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.718086</td>\n",
+       "      <td>0.057091</td>\n",
+       "      <td>5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>0.001937</td>\n",
+       "      <td>0.000078</td>\n",
+       "      <td>0.000374</td>\n",
+       "      <td>0.000003</td>\n",
+       "      <td>10</td>\n",
+       "      <td>5</td>\n",
+       "      <td>{'max_depth': 10, 'min_samples_split': 5}</td>\n",
+       "      <td>0.790323</td>\n",
+       "      <td>0.661290</td>\n",
+       "      <td>0.677419</td>\n",
+       "      <td>0.758065</td>\n",
+       "      <td>0.688525</td>\n",
+       "      <td>0.786885</td>\n",
+       "      <td>0.688525</td>\n",
+       "      <td>0.606557</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.704918</td>\n",
+       "      <td>0.703464</td>\n",
+       "      <td>0.055464</td>\n",
+       "      <td>9</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>0.001945</td>\n",
+       "      <td>0.000110</td>\n",
+       "      <td>0.000402</td>\n",
+       "      <td>0.000049</td>\n",
+       "      <td>10</td>\n",
+       "      <td>10</td>\n",
+       "      <td>{'max_depth': 10, 'min_samples_split': 10}</td>\n",
+       "      <td>0.758065</td>\n",
+       "      <td>0.677419</td>\n",
+       "      <td>0.725806</td>\n",
+       "      <td>0.774194</td>\n",
+       "      <td>0.754098</td>\n",
+       "      <td>0.721311</td>\n",
+       "      <td>0.655738</td>\n",
+       "      <td>0.672131</td>\n",
+       "      <td>0.704918</td>\n",
+       "      <td>0.737705</td>\n",
+       "      <td>0.718139</td>\n",
+       "      <td>0.037848</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   mean_fit_time  std_fit_time  mean_score_time  std_score_time  \\\n",
+       "0       0.001393      0.000347         0.000593        0.000203   \n",
+       "1       0.001388      0.000230         0.000592        0.000110   \n",
+       "2       0.001499      0.000171         0.000631        0.000128   \n",
+       "3       0.001794      0.000133         0.000577        0.000112   \n",
+       "4       0.001881      0.000243         0.000567        0.000094   \n",
+       "5       0.001975      0.000174         0.000586        0.000111   \n",
+       "6       0.002177      0.000383         0.000427        0.000073   \n",
+       "7       0.001937      0.000078         0.000374        0.000003   \n",
+       "8       0.001945      0.000110         0.000402        0.000049   \n",
+       "\n",
+       "   param_max_depth  param_min_samples_split  \\\n",
+       "0                3                        2   \n",
+       "1                3                        5   \n",
+       "2                3                       10   \n",
+       "3                5                        2   \n",
+       "4                5                        5   \n",
+       "5                5                       10   \n",
+       "6               10                        2   \n",
+       "7               10                        5   \n",
+       "8               10                       10   \n",
+       "\n",
+       "                                       params  split0_test_score  \\\n",
+       "0    {'max_depth': 3, 'min_samples_split': 2}           0.661290   \n",
+       "1    {'max_depth': 3, 'min_samples_split': 5}           0.661290   \n",
+       "2   {'max_depth': 3, 'min_samples_split': 10}           0.661290   \n",
+       "3    {'max_depth': 5, 'min_samples_split': 2}           0.693548   \n",
+       "4    {'max_depth': 5, 'min_samples_split': 5}           0.693548   \n",
+       "5   {'max_depth': 5, 'min_samples_split': 10}           0.725806   \n",
+       "6   {'max_depth': 10, 'min_samples_split': 2}           0.822581   \n",
+       "7   {'max_depth': 10, 'min_samples_split': 5}           0.790323   \n",
+       "8  {'max_depth': 10, 'min_samples_split': 10}           0.758065   \n",
+       "\n",
+       "   split1_test_score  split2_test_score  split3_test_score  split4_test_score  \\\n",
+       "0           0.693548           0.741935           0.790323           0.737705   \n",
+       "1           0.693548           0.741935           0.790323           0.737705   \n",
+       "2           0.693548           0.741935           0.790323           0.737705   \n",
+       "3           0.758065           0.741935           0.741935           0.737705   \n",
+       "4           0.758065           0.741935           0.741935           0.737705   \n",
+       "5           0.741935           0.774194           0.741935           0.737705   \n",
+       "6           0.661290           0.725806           0.758065           0.721311   \n",
+       "7           0.661290           0.677419           0.758065           0.688525   \n",
+       "8           0.677419           0.725806           0.774194           0.754098   \n",
+       "\n",
+       "   split5_test_score  split6_test_score  split7_test_score  split8_test_score  \\\n",
+       "0           0.655738           0.655738           0.672131           0.770492   \n",
+       "1           0.655738           0.655738           0.672131           0.770492   \n",
+       "2           0.655738           0.655738           0.672131           0.770492   \n",
+       "3           0.721311           0.672131           0.737705           0.721311   \n",
+       "4           0.721311           0.688525           0.737705           0.721311   \n",
+       "5           0.721311           0.688525           0.704918           0.721311   \n",
+       "6           0.786885           0.688525           0.622951           0.672131   \n",
+       "7           0.786885           0.688525           0.606557           0.672131   \n",
+       "8           0.721311           0.655738           0.672131           0.704918   \n",
+       "\n",
+       "   split9_test_score  mean_test_score  std_test_score  rank_test_score  \n",
+       "0           0.754098         0.713300        0.048683                6  \n",
+       "1           0.754098         0.713300        0.048683                6  \n",
+       "2           0.754098         0.713300        0.048683                6  \n",
+       "3           0.704918         0.723057        0.024833                3  \n",
+       "4           0.704918         0.724696        0.021769                2  \n",
+       "5           0.704918         0.726256        0.023031                1  \n",
+       "6           0.721311         0.718086        0.057091                5  \n",
+       "7           0.704918         0.703464        0.055464                9  \n",
+       "8           0.737705         0.718139        0.037848                4  "
+      ]
+     },
+     "execution_count": 94,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df=pd.DataFrame(obj.cv_results_)\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "id": "9b0351a9-c87d-4bcd-8861-61b8f84f87dc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(0.72625594923321)"
+      ]
+     },
+     "execution_count": 95,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "obj.best_score_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "id": "5e59c6f2-e0f3-42d6-ab41-fd3d1c7add94",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>param_max_depth</th>\n",
+       "      <th>param_min_samples_split</th>\n",
+       "      <th>mean_score_time</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>3</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0.000593</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>3</td>\n",
+       "      <td>5</td>\n",
+       "      <td>0.000592</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>10</td>\n",
+       "      <td>0.000631</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>5</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0.000577</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5</td>\n",
+       "      <td>5</td>\n",
+       "      <td>0.000567</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>0.000586</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>10</td>\n",
+       "      <td>2</td>\n",
+       "      <td>0.000427</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>10</td>\n",
+       "      <td>5</td>\n",
+       "      <td>0.000374</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>10</td>\n",
+       "      <td>10</td>\n",
+       "      <td>0.000402</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   param_max_depth  param_min_samples_split  mean_score_time\n",
+       "0                3                        2         0.000593\n",
+       "1                3                        5         0.000592\n",
+       "2                3                       10         0.000631\n",
+       "3                5                        2         0.000577\n",
+       "4                5                        5         0.000567\n",
+       "5                5                       10         0.000586\n",
+       "6               10                        2         0.000427\n",
+       "7               10                        5         0.000374\n",
+       "8               10                       10         0.000402"
+      ]
+     },
+     "execution_count": 96,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cols=[\"param_max_depth\",\"param_min_samples_split\",\"mean_score_time\"]\n",
+    "df=pd.DataFrame(obj.cv_results_)[cols]\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 97,
+   "id": "646c7789-5de8-4fa6-82b6-1df7747d685c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'max_depth': 5, 'min_samples_split': 10}"
+      ]
+     },
+     "execution_count": 97,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "obj.best_params_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "id": "c632544c-2c95-43bc-880d-7f762435a466",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(0.72625594923321)"
+      ]
+     },
+     "execution_count": 98,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "obj.best_score_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 100,
+   "id": "1aa3e093-cd95-40e6-bcff-39edc85446e2",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1 0 0 1 0 0 1 1 0 1 1 1 0 0 0 1 1 0 0 0 1 0 0 0 0 1 0 1 0 1 0 0 0 1 0 1 0\n",
+      " 0 1 1 0 0 0 1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 1 0 1 1 1 1 0 1 0 0 0 0 1\n",
+      " 1 1 0 1 0 0 1 0 0 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 1 1 0 0 1 0 1 1 0 1 0 1 0\n",
+      " 1 1 1 1 1 0 0 0 1 1 1 0 1 0 0 0 1 0 0 0 0 0 1 0 1 1 1 1 0 0 1 0 0 1 0 0 0\n",
+      " 0 1 0 0 0 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.model_selection import RandomizedSearchCV\n",
+    "model=DecisionTreeClassifier()\n",
+    "obj=RandomizedSearchCV(estimator=model,cv=5,return_train_score=False,param_distributions=d,n_iter=2)\n",
+    "obj.fit(X_train,Y_train)\n",
+    "print(obj.predict(X_test))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 101,
+   "id": "739c3e7d-b7fd-4751-8c2b-484ff2fdd192",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(0.7084632813541251)"
+      ]
+     },
+     "execution_count": 101,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "obj.best_score_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 102,
+   "id": "cb69c76a-0fb1-423e-9dbb-427a7606cdc9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>PassengerId</th>\n",
+       "      <th>Survived</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>892</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>893</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>894</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>895</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>896</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>413</th>\n",
+       "      <td>1305</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>414</th>\n",
+       "      <td>1306</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>415</th>\n",
+       "      <td>1307</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>416</th>\n",
+       "      <td>1308</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>417</th>\n",
+       "      <td>1309</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>418 rows × 2 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     PassengerId  Survived\n",
+       "0            892         0\n",
+       "1            893         1\n",
+       "2            894         0\n",
+       "3            895         0\n",
+       "4            896         1\n",
+       "..           ...       ...\n",
+       "413         1305         0\n",
+       "414         1306         1\n",
+       "415         1307         0\n",
+       "416         1308         0\n",
+       "417         1309         0\n",
+       "\n",
+       "[418 rows x 2 columns]"
+      ]
+     },
+     "execution_count": 102,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "from sklearn.tree import DecisionTreeClassifier\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.model_selection import cross_val_score\n",
+    "df=pd.read_csv(\"gender_submission.csv\")\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 103,
+   "id": "f7a6c1dc-7de9-455c-b59d-cd055662ce15",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(418, 2)"
+      ]
+     },
+     "execution_count": 103,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 104,
+   "id": "739ecf62-9325-4bd8-90e5-145798d34eb9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['PassengerId', 'Survived'], dtype='object')"
+      ]
+     },
+     "execution_count": 104,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 105,
+   "id": "958796a8-1d57-4e0d-8a38-329559740b53",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 892],\n",
+       "       [ 893],\n",
+       "       [ 894],\n",
+       "       [ 895],\n",
+       "       [ 896],\n",
+       "       [ 897],\n",
+       "       [ 898],\n",
+       "       [ 899],\n",
+       "       [ 900],\n",
+       "       [ 901],\n",
+       "       [ 902],\n",
+       "       [ 903],\n",
+       "       [ 904],\n",
+       "       [ 905],\n",
+       "       [ 906],\n",
+       "       [ 907],\n",
+       "       [ 908],\n",
+       "       [ 909],\n",
+       "       [ 910],\n",
+       "       [ 911],\n",
+       "       [ 912],\n",
+       "       [ 913],\n",
+       "       [ 914],\n",
+       "       [ 915],\n",
+       "       [ 916],\n",
+       "       [ 917],\n",
+       "       [ 918],\n",
+       "       [ 919],\n",
+       "       [ 920],\n",
+       "       [ 921],\n",
+       "       [ 922],\n",
+       "       [ 923],\n",
+       "       [ 924],\n",
+       "       [ 925],\n",
+       "       [ 926],\n",
+       "       [ 927],\n",
+       "       [ 928],\n",
+       "       [ 929],\n",
+       "       [ 930],\n",
+       "       [ 931],\n",
+       "       [ 932],\n",
+       "       [ 933],\n",
+       "       [ 934],\n",
+       "       [ 935],\n",
+       "       [ 936],\n",
+       "       [ 937],\n",
+       "       [ 938],\n",
+       "       [ 939],\n",
+       "       [ 940],\n",
+       "       [ 941],\n",
+       "       [ 942],\n",
+       "       [ 943],\n",
+       "       [ 944],\n",
+       "       [ 945],\n",
+       "       [ 946],\n",
+       "       [ 947],\n",
+       "       [ 948],\n",
+       "       [ 949],\n",
+       "       [ 950],\n",
+       "       [ 951],\n",
+       "       [ 952],\n",
+       "       [ 953],\n",
+       "       [ 954],\n",
+       "       [ 955],\n",
+       "       [ 956],\n",
+       "       [ 957],\n",
+       "       [ 958],\n",
+       "       [ 959],\n",
+       "       [ 960],\n",
+       "       [ 961],\n",
+       "       [ 962],\n",
+       "       [ 963],\n",
+       "       [ 964],\n",
+       "       [ 965],\n",
+       "       [ 966],\n",
+       "       [ 967],\n",
+       "       [ 968],\n",
+       "       [ 969],\n",
+       "       [ 970],\n",
+       "       [ 971],\n",
+       "       [ 972],\n",
+       "       [ 973],\n",
+       "       [ 974],\n",
+       "       [ 975],\n",
+       "       [ 976],\n",
+       "       [ 977],\n",
+       "       [ 978],\n",
+       "       [ 979],\n",
+       "       [ 980],\n",
+       "       [ 981],\n",
+       "       [ 982],\n",
+       "       [ 983],\n",
+       "       [ 984],\n",
+       "       [ 985],\n",
+       "       [ 986],\n",
+       "       [ 987],\n",
+       "       [ 988],\n",
+       "       [ 989],\n",
+       "       [ 990],\n",
+       "       [ 991],\n",
+       "       [ 992],\n",
+       "       [ 993],\n",
+       "       [ 994],\n",
+       "       [ 995],\n",
+       "       [ 996],\n",
+       "       [ 997],\n",
+       "       [ 998],\n",
+       "       [ 999],\n",
+       "       [1000],\n",
+       "       [1001],\n",
+       "       [1002],\n",
+       "       [1003],\n",
+       "       [1004],\n",
+       "       [1005],\n",
+       "       [1006],\n",
+       "       [1007],\n",
+       "       [1008],\n",
+       "       [1009],\n",
+       "       [1010],\n",
+       "       [1011],\n",
+       "       [1012],\n",
+       "       [1013],\n",
+       "       [1014],\n",
+       "       [1015],\n",
+       "       [1016],\n",
+       "       [1017],\n",
+       "       [1018],\n",
+       "       [1019],\n",
+       "       [1020],\n",
+       "       [1021],\n",
+       "       [1022],\n",
+       "       [1023],\n",
+       "       [1024],\n",
+       "       [1025],\n",
+       "       [1026],\n",
+       "       [1027],\n",
+       "       [1028],\n",
+       "       [1029],\n",
+       "       [1030],\n",
+       "       [1031],\n",
+       "       [1032],\n",
+       "       [1033],\n",
+       "       [1034],\n",
+       "       [1035],\n",
+       "       [1036],\n",
+       "       [1037],\n",
+       "       [1038],\n",
+       "       [1039],\n",
+       "       [1040],\n",
+       "       [1041],\n",
+       "       [1042],\n",
+       "       [1043],\n",
+       "       [1044],\n",
+       "       [1045],\n",
+       "       [1046],\n",
+       "       [1047],\n",
+       "       [1048],\n",
+       "       [1049],\n",
+       "       [1050],\n",
+       "       [1051],\n",
+       "       [1052],\n",
+       "       [1053],\n",
+       "       [1054],\n",
+       "       [1055],\n",
+       "       [1056],\n",
+       "       [1057],\n",
+       "       [1058],\n",
+       "       [1059],\n",
+       "       [1060],\n",
+       "       [1061],\n",
+       "       [1062],\n",
+       "       [1063],\n",
+       "       [1064],\n",
+       "       [1065],\n",
+       "       [1066],\n",
+       "       [1067],\n",
+       "       [1068],\n",
+       "       [1069],\n",
+       "       [1070],\n",
+       "       [1071],\n",
+       "       [1072],\n",
+       "       [1073],\n",
+       "       [1074],\n",
+       "       [1075],\n",
+       "       [1076],\n",
+       "       [1077],\n",
+       "       [1078],\n",
+       "       [1079],\n",
+       "       [1080],\n",
+       "       [1081],\n",
+       "       [1082],\n",
+       "       [1083],\n",
+       "       [1084],\n",
+       "       [1085],\n",
+       "       [1086],\n",
+       "       [1087],\n",
+       "       [1088],\n",
+       "       [1089],\n",
+       "       [1090],\n",
+       "       [1091],\n",
+       "       [1092],\n",
+       "       [1093],\n",
+       "       [1094],\n",
+       "       [1095],\n",
+       "       [1096],\n",
+       "       [1097],\n",
+       "       [1098],\n",
+       "       [1099],\n",
+       "       [1100],\n",
+       "       [1101],\n",
+       "       [1102],\n",
+       "       [1103],\n",
+       "       [1104],\n",
+       "       [1105],\n",
+       "       [1106],\n",
+       "       [1107],\n",
+       "       [1108],\n",
+       "       [1109],\n",
+       "       [1110],\n",
+       "       [1111],\n",
+       "       [1112],\n",
+       "       [1113],\n",
+       "       [1114],\n",
+       "       [1115],\n",
+       "       [1116],\n",
+       "       [1117],\n",
+       "       [1118],\n",
+       "       [1119],\n",
+       "       [1120],\n",
+       "       [1121],\n",
+       "       [1122],\n",
+       "       [1123],\n",
+       "       [1124],\n",
+       "       [1125],\n",
+       "       [1126],\n",
+       "       [1127],\n",
+       "       [1128],\n",
+       "       [1129],\n",
+       "       [1130],\n",
+       "       [1131],\n",
+       "       [1132],\n",
+       "       [1133],\n",
+       "       [1134],\n",
+       "       [1135],\n",
+       "       [1136],\n",
+       "       [1137],\n",
+       "       [1138],\n",
+       "       [1139],\n",
+       "       [1140],\n",
+       "       [1141],\n",
+       "       [1142],\n",
+       "       [1143],\n",
+       "       [1144],\n",
+       "       [1145],\n",
+       "       [1146],\n",
+       "       [1147],\n",
+       "       [1148],\n",
+       "       [1149],\n",
+       "       [1150],\n",
+       "       [1151],\n",
+       "       [1152],\n",
+       "       [1153],\n",
+       "       [1154],\n",
+       "       [1155],\n",
+       "       [1156],\n",
+       "       [1157],\n",
+       "       [1158],\n",
+       "       [1159],\n",
+       "       [1160],\n",
+       "       [1161],\n",
+       "       [1162],\n",
+       "       [1163],\n",
+       "       [1164],\n",
+       "       [1165],\n",
+       "       [1166],\n",
+       "       [1167],\n",
+       "       [1168],\n",
+       "       [1169],\n",
+       "       [1170],\n",
+       "       [1171],\n",
+       "       [1172],\n",
+       "       [1173],\n",
+       "       [1174],\n",
+       "       [1175],\n",
+       "       [1176],\n",
+       "       [1177],\n",
+       "       [1178],\n",
+       "       [1179],\n",
+       "       [1180],\n",
+       "       [1181],\n",
+       "       [1182],\n",
+       "       [1183],\n",
+       "       [1184],\n",
+       "       [1185],\n",
+       "       [1186],\n",
+       "       [1187],\n",
+       "       [1188],\n",
+       "       [1189],\n",
+       "       [1190],\n",
+       "       [1191],\n",
+       "       [1192],\n",
+       "       [1193],\n",
+       "       [1194],\n",
+       "       [1195],\n",
+       "       [1196],\n",
+       "       [1197],\n",
+       "       [1198],\n",
+       "       [1199],\n",
+       "       [1200],\n",
+       "       [1201],\n",
+       "       [1202],\n",
+       "       [1203],\n",
+       "       [1204],\n",
+       "       [1205],\n",
+       "       [1206],\n",
+       "       [1207],\n",
+       "       [1208],\n",
+       "       [1209],\n",
+       "       [1210],\n",
+       "       [1211],\n",
+       "       [1212],\n",
+       "       [1213],\n",
+       "       [1214],\n",
+       "       [1215],\n",
+       "       [1216],\n",
+       "       [1217],\n",
+       "       [1218],\n",
+       "       [1219],\n",
+       "       [1220],\n",
+       "       [1221],\n",
+       "       [1222],\n",
+       "       [1223],\n",
+       "       [1224],\n",
+       "       [1225],\n",
+       "       [1226],\n",
+       "       [1227],\n",
+       "       [1228],\n",
+       "       [1229],\n",
+       "       [1230],\n",
+       "       [1231],\n",
+       "       [1232],\n",
+       "       [1233],\n",
+       "       [1234],\n",
+       "       [1235],\n",
+       "       [1236],\n",
+       "       [1237],\n",
+       "       [1238],\n",
+       "       [1239],\n",
+       "       [1240],\n",
+       "       [1241],\n",
+       "       [1242],\n",
+       "       [1243],\n",
+       "       [1244],\n",
+       "       [1245],\n",
+       "       [1246],\n",
+       "       [1247],\n",
+       "       [1248],\n",
+       "       [1249],\n",
+       "       [1250],\n",
+       "       [1251],\n",
+       "       [1252],\n",
+       "       [1253],\n",
+       "       [1254],\n",
+       "       [1255],\n",
+       "       [1256],\n",
+       "       [1257],\n",
+       "       [1258],\n",
+       "       [1259],\n",
+       "       [1260],\n",
+       "       [1261],\n",
+       "       [1262],\n",
+       "       [1263],\n",
+       "       [1264],\n",
+       "       [1265],\n",
+       "       [1266],\n",
+       "       [1267],\n",
+       "       [1268],\n",
+       "       [1269],\n",
+       "       [1270],\n",
+       "       [1271],\n",
+       "       [1272],\n",
+       "       [1273],\n",
+       "       [1274],\n",
+       "       [1275],\n",
+       "       [1276],\n",
+       "       [1277],\n",
+       "       [1278],\n",
+       "       [1279],\n",
+       "       [1280],\n",
+       "       [1281],\n",
+       "       [1282],\n",
+       "       [1283],\n",
+       "       [1284],\n",
+       "       [1285],\n",
+       "       [1286],\n",
+       "       [1287],\n",
+       "       [1288],\n",
+       "       [1289],\n",
+       "       [1290],\n",
+       "       [1291],\n",
+       "       [1292],\n",
+       "       [1293],\n",
+       "       [1294],\n",
+       "       [1295],\n",
+       "       [1296],\n",
+       "       [1297],\n",
+       "       [1298],\n",
+       "       [1299],\n",
+       "       [1300],\n",
+       "       [1301],\n",
+       "       [1302],\n",
+       "       [1303],\n",
+       "       [1304],\n",
+       "       [1305],\n",
+       "       [1306],\n",
+       "       [1307],\n",
+       "       [1308],\n",
+       "       [1309]])"
+      ]
+     },
+     "execution_count": 105,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x=df.drop(\"Survived\",axis=\"columns\").values\n",
+    "x"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 106,
+   "id": "4f83f71a-350a-4582-b967-43847849e3e2",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0,\n",
+       "       1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,\n",
+       "       1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1,\n",
+       "       1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,\n",
+       "       1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,\n",
+       "       0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,\n",
+       "       1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,\n",
+       "       0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,\n",
+       "       1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,\n",
+       "       0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0,\n",
+       "       1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,\n",
+       "       0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,\n",
+       "       0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0,\n",
+       "       0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,\n",
+       "       0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0,\n",
+       "       1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0,\n",
+       "       0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0,\n",
+       "       1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1,\n",
+       "       0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0])"
+      ]
+     },
+     "execution_count": 106,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y=df.Survived.values\n",
+    "y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 108,
+   "id": "ea166f7c-4a19-4f90-96c7-608bb9d24a88",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_train,X_test,Y_train,Y_test=train_test_split(x,y,test_size=0.2,random_state=0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 109,
+   "id": "b0badcda-d7c5-40d1-baf8-fdb0e45d9b32",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 1 1 1 0 0 1 0 0 0 1 1 0 1 1 0 0\n",
+      " 1 0 1 1 1 0 0 0 0 1 0 0 1 0 1 0 1 0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 1 0 0 0 0\n",
+      " 0 0 0 1 1 0 1 0 0 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "model=DecisionTreeClassifier()\n",
+    "model.fit(X_train,Y_train)\n",
+    "print(model.predict(X_test))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 110,
+   "id": "edd72afa-bfe7-41d1-8976-299aeb186c13",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model.predict([[1309]]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 111,
+   "id": "4bf3ad50-c916-4778-913c-37d89a1dfe42",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.5476190476190477\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model.score(X_test,Y_test))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "id": "32fc8a18-8405-4378-ad22-b615a6b97a11",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model.predict([[896]]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 113,
+   "id": "f8429b82-d27d-4ef5-b5f4-c04f6b3c0bd2",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.35714286, 0.4047619 , 0.46428571, 0.65060241, 0.37349398])"
+      ]
+     },
+     "execution_count": 113,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "final=cross_val_score(model,x,y,cv=5)\n",
+    "final"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "acf3d5b0-3eb9-49d9-894e-d970fc1036f3",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e6d72657-5477-48e2-ad0a-e1bc59c364cd",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5438d682-9caf-4b4d-ae0d-896e702230b6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0a72e8e3-22f7-498e-bc1c-176f2f03f375",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4a02a1ba-aa46-48d4-953b-8091808aa766",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "563868b7-d9c6-42fb-9751-124b65b55524",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "37a9ed23-b2f8-401c-baa9-9061f1c61015",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "891ca91a-2483-409d-8f30-b466ba8a39e4",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "90eb775b-28eb-49e0-ad5a-a4fd5105497e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "771efe3d-eaa3-439f-9688-a338a2b40521",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3a6ff7ef-e1ed-4b66-8d28-3527af87fb3c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "465b37e3-cd80-4844-b433-c16a35d0c9d1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4be2a1eb-116a-4980-89d1-c30f4fffd2ef",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
